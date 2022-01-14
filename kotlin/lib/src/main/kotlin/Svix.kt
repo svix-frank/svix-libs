@@ -7,4 +7,5 @@ class Svix(token: String, options: SvixOptions = SvixOptions()) {
     val eventType = EventType(token, options)
     val message = Message(token, options)
     val messageAttempt = MessageAttempt(token, options)
+    val organization = Organization(token, options)
 }
