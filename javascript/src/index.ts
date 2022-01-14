@@ -38,6 +38,9 @@ import {
   Middleware,
   RequestContext,
   ResponseContext,
+  OrganizationApi,
+  ExportOrganizationOut,
+  ImportOrganizationIn,
 } from "./openapi/index";
 export * from "./openapi/models/all";
 export * from "./openapi/apis/exception";
@@ -72,6 +75,7 @@ export class Svix {
   public readonly eventType: EventType;
   public readonly message: Message;
   public readonly messageAttempt: MessageAttempt;
+  public readonly organization: Organization;
 
   public constructor(token: string, options: SvixOptions = {}) {
     const baseUrl: string = options.serverUrl ?? "https://api.svix.com";
@@ -98,6 +102,7 @@ export class Svix {
     this.eventType = new EventType(config);
     this.message = new Message(config);
     this.messageAttempt = new MessageAttempt(config);
+    this.organization = new Organization(config);
   }
 }
 
@@ -401,6 +406,26 @@ class MessageAttempt {
     return this.api.listAttemptsForEndpointApiV1AppAppIdMsgMsgIdEndpointEndpointIdAttemptGet(
       { appId, msgId, endpointId, ...options }
     );
+  }
+}
+
+class Organization {
+  private readonly api: OrganizationApi;
+
+  public constructor(config: Configuration) {
+    this.api = new OrganizationApi(config);
+  }
+
+  public export(): Promise<ExportOrganizationOut> {
+    return this.api.exportOrganizationConfigurationApiV1OrgExportPost({
+      body: {}
+    });
+  }
+
+  public import(importOrganizationIn: ImportOrganizationIn): Promise<void> {
+    return this.api.importOrganizationConfigurationApiV1OrgImportPost({
+      importOrganizationIn,
+    });
   }
 }
 
