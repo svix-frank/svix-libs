@@ -6,7 +6,7 @@ module Svix
             @api = OrganizationApi.new(api_client)
         end
 
-        def export()
+        def export
             return @api.export_organization_configuration_api_v1_org_export_post({})
         end
 

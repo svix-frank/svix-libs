@@ -9,8 +9,8 @@ from .openapi_client.api.endpoint_api import EndpointApi
 from .openapi_client.api.event_type_api import EventTypeApi
 from .openapi_client.api.message_api import MessageApi
 from .openapi_client.api.message_attempt_api import MessageAttemptApi
-from .openapi_client.api_client import ApiClient
 from .openapi_client.api.organization_api import OrganizationApi
+from .openapi_client.api_client import ApiClient
 from .openapi_client.configuration import Configuration
 from .openapi_client.model.application_in import ApplicationIn
 from .openapi_client.model.application_out import ApplicationOut
@@ -25,6 +25,8 @@ from .openapi_client.model.endpoint_update import EndpointUpdate
 from .openapi_client.model.event_type_in import EventTypeIn
 from .openapi_client.model.event_type_out import EventTypeOut
 from .openapi_client.model.event_type_update import EventTypeUpdate
+from .openapi_client.model.export_organization_out import ExportOrganizationOut
+from .openapi_client.model.import_organization_in import ImportOrganizationIn
 from .openapi_client.model.list_response_application_out import ListResponseApplicationOut
 from .openapi_client.model.list_response_endpoint_message_out import ListResponseEndpointMessageOut
 from .openapi_client.model.list_response_endpoint_out import ListResponseEndpointOut
@@ -38,9 +40,6 @@ from .openapi_client.model.message_in import MessageIn
 from .openapi_client.model.message_out import MessageOut
 from .openapi_client.model.message_status import MessageStatus
 from .openapi_client.model.recover_in import RecoverIn
-from .openapi_client.model.export_organization_out import ExportOrganizationOut
-from .openapi_client.model.import_organization_in import ImportOrganizationIn
-
 
 DEFAULT_SERVER_URL = "https://api.svix.com"
 
@@ -91,7 +90,9 @@ class MessageAttemptListOptions(ListOptions):
 
 ApiClass = t.TypeVar(
     "ApiClass",
-    bound=t.Union[AuthenticationApi, ApplicationApi, EndpointApi, EventTypeApi, MessageApi, MessageAttemptApi],
+    bound=t.Union[
+        AuthenticationApi, ApplicationApi, EndpointApi, EventTypeApi, MessageApi, MessageAttemptApi, OrganizationApi
+    ],
 )
 
 
@@ -340,21 +341,20 @@ class MessageAttempt(ApiBase[MessageAttemptApi]):
                 app_id=app_id, msg_id=msg_id, endpoint_id=endpoint_id, **options.to_dict(), _check_return_type=False
             )
 
+
 class Organization(ApiBase[OrganizationApi]):
     _ApiClass = OrganizationApi
 
-    def exportOrganization(self) -> ExportOrganizationOut:
+    def export_organization(self) -> ExportOrganizationOut:
         with self._api() as api:
             return api.export_organization_configuration_api_v1_org_export_post(body={})
-    
-    def importOrganization(
-        self,
-        import_organization_in: ImportOrganizationIn
-    ) -> None:
+
+    def import_organization(self, import_organization_in: ImportOrganizationIn) -> None:
         with self._api() as api:
             return api.import_organization_configuration_api_v1_org_import_post(
                 import_organization_in=import_organization_in, _check_return_type=False
             )
+
 
 class Svix:
     _configuration: Configuration
@@ -390,6 +390,7 @@ class Svix:
     @property
     def organization(self) -> Organization:
         return Organization(self._configuration)
+
 
 __all__ = [
     "ApplicationIn",

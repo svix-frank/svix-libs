@@ -61,5 +61,8 @@ public final class Svix {
 		return messageAttempt;
 	}
 
-	public Organization getOrganization() { return organization; }
+	public Organization getOrganization() {
+		return organization;
+	}
+
 }
