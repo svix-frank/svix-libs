@@ -12,6 +12,8 @@ require "svix/api/event_type_api"
 require "svix/api/health_api"
 require "svix/api/message_api"
 require "svix/api/message_attempt_api"
+require "svix/api/organization_api"
+
 
 # Models
 require "svix/models/application_in"
@@ -61,6 +63,9 @@ require "svix/models/message_status"
 require "svix/models/recover_in"
 require "svix/models/validation_error"
 require "svix/models/webhook_types"
+require "svix/models/export_organization_out"
+require "svix/models/import_organization_in"
+
 
 # Core
 require "svix/api_client"
@@ -73,6 +78,8 @@ require "svix/errors"
 require "svix/event_type_api"
 require "svix/message_api"
 require "svix/message_attempt_api"
+require "svix/organization_api"
+
 require "svix/svix"
 require "svix/util"
 require "svix/version"

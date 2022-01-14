@@ -18,6 +18,7 @@ module Svix
         attr_accessor :event_type
         attr_accessor :message
         attr_accessor :message_attempt
+        attr_accessor :organization
 
         def initialize(auth_token, options = SvixOptions.new)
             uri = URI(options.server_url)
@@ -38,6 +39,7 @@ module Svix
             @event_type = EventTypeAPI.new(api_client)
             @message = MessageAPI.new(api_client)
             @message_attempt = MessageAttemptAPI.new(api_client)
+            @organization = OrganizationAPI.new(api_client)
         end
     end
 end
