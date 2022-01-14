@@ -12,6 +12,7 @@ public final class Svix {
 	private final EventType eventType;
 	private final Message message;
 	private final MessageAttempt messageAttempt;
+	private final Organization organization;
 
 	public Svix(final String token) {
 		this(token, new SvixOptions());
@@ -33,6 +34,7 @@ public final class Svix {
 		eventType = new EventType();
 		message = new Message();
 		messageAttempt = new MessageAttempt();
+		organization = new Organization();
 	}
 
 	public Application getApplication() {
@@ -58,4 +60,6 @@ public final class Svix {
 	public MessageAttempt getMessageAttempt() {
 		return messageAttempt;
 	}
+
+	public Organization getOrganization() { return organization; }
 }
